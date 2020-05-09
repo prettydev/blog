@@ -1,34 +1,91 @@
-require('dotenv').config({
-  path: `.env.${process.env.NODE_ENV}`
-})
-
-const contentfulConfig = {
-  spaceId: process.env.CONTENTFUL_SPACE_ID,
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-  host: process.env.CONTENTFUL_HOST
-}
-
-const { spaceId, accessToken } = contentfulConfig
-
-if (!spaceId || !accessToken) {
-  throw new Error(
-    'Contentful spaceId and the access token need to be provided.'
-  )
-}
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
 
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Contentful starter',
+    title: 'Gatsby Casper',
+    description: 'A port of the casper blog built for gatsby',
+    siteUrl: 'https://gatsby-casper.netlify.com', // full path to blog - no ending slash
   },
-  pathPrefix: '/gatsby-contentful-starter',
+  mapping: {
+    'MarkdownRemark.frontmatter.author': 'AuthorYaml',
+  },
   plugins: [
-    'gatsby-transformer-remark',
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sharp',
+      options: {
+        quality: 100,
+        stripMetadata: true,
+      },
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'content',
+        path: path.join(__dirname, 'src', 'content'),
+      },
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: 'gatsby-remark-responsive-iframe',
+            options: {
+              wrapperStyle: 'margin-bottom: 1rem',
+            },
+          },
+          'gatsby-remark-prismjs',
+          'gatsby-remark-copy-linked-files',
+          'gatsby-remark-smartypants',
+          'gatsby-remark-abbr',
+          {
+            resolve: 'gatsby-remark-images',
+            options: {
+              maxWidth: 2000,
+              quality: 100,
+            },
+          },
+        ],
+      },
+    },
+    'gatsby-transformer-json',
+    {
+      resolve: 'gatsby-plugin-canonical-urls',
+      options: {
+        siteUrl: 'https://gatsby-casper.netlify.com',
+      },
+    },
+    'gatsby-plugin-emotion',
+    'gatsby-plugin-typescript',
     'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sharp',
+    'gatsby-transformer-yaml',
+    'gatsby-plugin-feed',
     {
-      resolve: 'gatsby-source-contentful',
-      options: contentfulConfig,
-    }
+      resolve: 'gatsby-plugin-postcss',
+      options: {
+        postCssPlugins: [require('postcss-color-function'), require('cssnano')()],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: 'UA-XXXX-Y',
+        // Puts tracking script in the head instead of the body
+        head: true,
+        // IP anonymization for GDPR compliance
+        anonymize: true,
+        // Disable analytics for users with `Do Not Track` enabled
+        respectDNT: true,
+        // Avoids sending pageview hits from custom paths
+        exclude: ['/preview/**'],
+        // Specifies what percentage of users should be tracked
+        sampleRate: 100,
+        // Determines how often site speed tracking beacons will be sent
+        siteSpeedSampleRate: 10,
+      },
+    },
   ],
-}
+};

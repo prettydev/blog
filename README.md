@@ -1,82 +1,89 @@
-# gatsby-contentful-starter
+# gatsby-casper
 
-Gatsby [Contentful](https://www.contentful.com) starter for creating a blog
+Demo: https://gatsby-casper.netlify.app
 
-![The index page of the starter blog](https://rawgit.com/contentful-userland/gatsby-contentful-starter/master/screenshot.jpg "The index page of the starter blog")
+This is a static blog generator and starter gatsby repo. A port of [Casper](https://github.com/TryGhost/Casper) v2 a theme from [Ghost](https://ghost.org/) for [GatsbyJS](https://www.gatsbyjs.org/) using [TypeScript](https://www.typescriptlang.org/).
 
-Static sites are scalable, secure and have very little required maintenance. They come with a drawback though. Not everybody feels good editing files, building a project and uploading it somewhere. This is where Contentful comes into play.
+## Getting Started
 
-With Contentful and Gatsby you can connect your favorite static site generator with an API that provides an easy to use interface for people writing content and automate the publishing using services like [Travis CI](https://travis-ci.org/) or [Netlify](https://www.netlify.com/).
-
-## Features
-
-* Simple content model and structure. Easy to adjust to your needs.
-* Contentful integration using our [Sync API](https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/synchronization/initial-synchronization-of-entries-of-a-specific-content-type)
-* Using our [Delivery API](https://www.contentful.com/developers/docs/references/content-delivery-api/).
-* Responsive/adaptive images via [gatsby-image](https://www.gatsbyjs.org/packages/gatsby-image/)
-
-## Contribution
-
-This project is part of [contentful-userland](https://github.com/contentful-userland) which means that we’re always open to contributions **and you can be part of userland and shape the project yourself after your first merged pull request**. You can learn more about how contentful userland is organized by visiting [our about repository](https://github.com/contentful-userland/about).
-
-## Requirements
-
-To use this project you have to have a Contentful account. If you don't have one yet you can register at [www.contentful.com/sign-up](https://www.contentful.com/sign-up/).
-
-## Getting started
-
-Install [Yarn](https://yarnpkg.com/en/docs/install) (if you haven't already).
-
-### Get the source code and install dependencies.
+Clone this repo.
 
 ```
-$ git clone git@github.com:contentful-userland/gatsby-contentful-starter.git
-$ yarn install
+git clone https://github.com/scttcper/gatsby-casper.git --depth=1
 ```
 
-Or use the [Gatsby CLI](https://www.npmjs.com/package/gatsby-cli).
+Remove .git folder and setup a new one
 
 ```
-$ gatsby new contentful-starter https://github.com/contentful-userland/gatsby-contentful-starter
+rm -rf .git && git init
 ```
 
-### Set up of the needed content model and create a configuration file
+Edit website-config.ts with your website settings.
+Either disable subscribe or setup a mailchimp list and add the form action and hidden field input name.
 
-This project comes with a Contentful setup command `yarn run setup`.
+Now push to whatever repo you want!
 
-![Command line dialog of the yarn run setup command](https://rawgit.com/contentful-userland/gatsby-contentful-starter/master/setup.jpg "Command line dialog of the yarn run setup command")
+### Progress
 
-This command will ask you for a space ID, and access tokens for the Contentful Management and Delivery API and then import the needed content model into the space you define and write a config file (`./contentful.json`).
+- [x] emotion / component styles
+- [x] home page
+- [x] tag page
+- [x] author page
+- [x] blog page
+  - [x] subscribe form - using [mailchimp](https://mailchimp.com)
+  - [ ] full width images in markdown? - not sure if possible
+  - [x] multiple post authors
+- [x] 404 page
+- [x] subscribe modal/overlay
+- [x] rss feed (on production build)
+- [ ] polish ✨
+  - [x] meta tags
+  - [x] page titles
+  - [ ] pagination
 
-`yarn run setup` automates that for you but if you want to do it yourself rename `.contentful.json.sample` to `.contentful.json` and add your configuration in this file.
+### Deploy to Netlify
 
-## Crucial Commands
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/scttcper/gatsby-casper)
 
-This project comes with a few handy commands for linting and code fixing. The most important ones are the ones to develop and ship code. You can find the most important commands below.
+## How to configure Google Analytics
 
-### `yarn run dev`
+Edit `gatsby-config.js` and add your tracking ID
 
-Run in the project locally.
+```javascript
+{
+    resolve: `gatsby-plugin-google-analytics`,
+    options: {
+      // Here goes your tracking ID
+      trackingId: 'UA-XXXX-Y',
+      // Puts tracking script in the head instead of the body
+      head: true,
+      // IP anonymization for GDPR compliance
+      anonymize: true,
+      // Disable analytics for users with `Do Not Track` enabled
+      respectDNT: true,
+      // Avoids sending pageview hits from custom paths
+      exclude: ['/preview/**'],
+      // Specifies what percentage of users should be tracked
+      sampleRate: 100,
+      // Determines how often site speed tracking beacons will be sent
+      siteSpeedSampleRate: 10,
+    },
+  },
+```
 
-### `yarn run build`
+## How to edit your site title and description
 
-Run a production build into `./public`. The result is ready to be put on any static hosting you prefer.
+Edit `gatsby-config.js` section `siteMetadata`
 
-### `yarn run deploy`
+```javascript
+ siteMetadata: {
+    title: 'My awesome site name',
+    description: 'This is a description for my site',
+    siteUrl: 'https://mysite.com', // full path to blog - no ending slash
+  },
+```
 
-Run a production build into `./public` and publish the site to GitHub pages.
+## How to adjust pagination
 
-### `yarn run cleanup-repository`
-
-Removes all dependencies, scripts and data from the installation script.
-
-## Roadmap
-
-- [x] [make the starter completely responsive](https://github.com/contentful-userland/gatsby-contentful-starter/issues/2)
-- [ ] [include tags](https://github.com/contentful-userland/gatsby-contentful-starter/issues/3)
-- [x] [support traced placeholders](https://github.com/contentful-userland/gatsby-contentful-starter/issues/4)
-- [ ] [add i18n](https://github.com/contentful-userland/gatsby-contentful-starter/issues/6)
-
-## Other resources
-
-- Tutorial video series ["Building a blazing fast website with GatsbyJS and Contentful"](https://www.youtube.com/watch?v=Ek4o40w1tH4&list=PL8KiuH6vpACV-F7jXribe4YveGBhBeG9A) by @Khaledgarbaya
+In `gatsby-node.js`, edit the `postsPerPage` constant. The default value is
+six posts per page.
