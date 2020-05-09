@@ -9,7 +9,7 @@ This is a static blog generator and starter gatsby repo. A port of [Casper](http
 Clone this repo.
 
 ```
-git clone https://github.com/scttcper/gatsby-casper.git --depth=1
+git clone https://github.com/prettydev/blog.git --depth=1
 ```
 
 Remove .git folder and setup a new one
@@ -43,7 +43,7 @@ Now push to whatever repo you want!
 
 ### Deploy to Netlify
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/scttcper/gatsby-casper)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/prettydev/blog)
 
 ## How to configure Google Analytics
 
